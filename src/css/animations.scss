@@ -1,0 +1,65 @@
+$duration: (
+  traverse-small-area: 100ms,
+  traverse-medium-area-open: 250ms,
+  traverse-medium-area-close: 200ms,
+  traverse-large-area-open: 300ms,
+  traverse-large-area-close: 250ms,
+  simple-fade-in: 150ms,
+  simple-fade-out: 75ms,
+  shape-change: 200ms,
+  color-change: 100ms,
+  icon-animation: 500ms,
+  400ms: 400ms,
+  600ms: 600ms,
+  800ms: 800ms,
+  1s: 1s,
+);
+
+@function duration($key) {
+  @if map-has-key($duration, $key) {
+    @return map-get($duration, $key);
+  }
+
+  @error "Cannot find '#{$duration}' option into $duration list.";
+
+  @return null;
+}
+
+@each $duration-name, $duration-value in $duration {
+  .duration-#{$duration-name} {
+    animation-duration: $duration-value;
+    // The next line is set to allow the management of transition durations
+    // This could cause bugs and in case will be removed, WATCH OUT
+    transition-duration: $duration-value;
+  }
+}
+
+// Reference for cubic-bezier equivalent to standard easing keywords: https://css-tricks.com/ease-out-in-ease-in-out/
+// Reference for material easings: https://material.io/design/motion/speed.html#easing
+
+$easing: (
+  accelerate: cubic-bezier(0.4, 0, 1, 1),
+  decelerate: cubic-bezier(0, 0, 0.2, 1),
+  standard: cubic-bezier(0.4, 0, 0.2, 1),
+);
+
+@function easing($key) {
+  @if map-has-key($easing, $key) {
+    @return map-get($easing, $key);
+  }
+
+  @error "Cannot find '#{$easing}' option into $easing list.";
+
+  @return null;
+}
+
+@each $easing-name, $easing-value in $easing {
+  .easing-#{$easing-name} {
+    animation-timing-function: $easing-value;
+  }
+}
+
+.animated {
+  @extend .easing-standard;
+  @extend .duration-shape-change;
+}

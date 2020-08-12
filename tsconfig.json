@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "strict": true,
+    "outDir": "dist",
+    "sourceMap": true,
+    "target": "esnext",
+    "moduleResolution": "node",
+    "module": "esnext"
+  },
+  "include": [
+    "src/exports.ts",
+    "src/composables/animate.ts",
+    "src/mixins/animate.ts"
+  ]
+}
