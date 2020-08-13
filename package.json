@@ -1,7 +1,12 @@
 {
   "name": "@dreamonkey/quasar-app-extension-animate",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Extend Quasar animation system",
+  "keywords": [
+    "quasar",
+    "animate",
+    "intersection"
+  ],
   "author": "Paolo Caleffi <p.caleffi@dreamonkey.com>",
   "license": "MIT",
   "main": "dist/exports.js",
@@ -10,10 +15,7 @@
     "build": "tsc --declaration --declarationDir dist/types",
     "test": "echo \"No test specified\" && exit 0"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dreamonkey/animate"
-  },
+  "repository": "github:dreamonkey/animate",
   "bugs": "https://github.com/dreamonkey/animate/issues",
   "homepage": "",
   "engines": {
@@ -27,5 +29,8 @@
   },
   "optionalDependencies": {
     "@vue/composition-api": "^1.0.0-beta.9"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
