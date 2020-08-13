@@ -16,7 +16,7 @@ quasar ext add @dreamonkey/animate
 Import the SCSS variables file at the end of your `src/css/quasar.variables.scss`
 
 ```scss
-@import "@dreamonkey/quasar-app-extension-animate/src/animations.scss";
+@import "~@dreamonkey/quasar-app-extension-animate/dist/animations";
 ```
 
 If using Options or Class API, register the mixin on all components using this AE features
