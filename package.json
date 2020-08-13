@@ -1,6 +1,6 @@
 {
   "name": "@dreamonkey/quasar-app-extension-animate",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Extend Quasar animation system",
   "keywords": [
     "quasar",
@@ -9,6 +9,10 @@
   ],
   "author": "Paolo Caleffi <p.caleffi@dreamonkey.com>",
   "license": "MIT",
+  "files": [
+    "dist",
+    "src"
+  ],
   "main": "dist/exports.js",
   "typings": "dist/types/exports.d.ts",
   "scripts": {
