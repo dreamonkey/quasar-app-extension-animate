@@ -6,9 +6,6 @@
   "license": "MIT",
   "main": "dist/exports.js",
   "typings": "dist/types/exports.d.ts",
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "build": "tsc --declaration --declarationDir dist/types",
     "test": "echo \"No test specified\" && exit 0"
