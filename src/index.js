@@ -11,5 +11,8 @@ module.exports = function (api) {
     conf.css.push(
       "~@dreamonkey/quasar-app-extension-animate/src/css/animations.scss"
     );
+    conf.build.transpileDependencies.push(
+      /@dreamonkey[\\/]quasar-app-extension-animate/
+    );
   });
 };
