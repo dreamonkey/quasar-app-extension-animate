@@ -35,7 +35,7 @@ function animateOut(animationClass: string, options: AnimateOptions = {}) {
   return animate(animationClass, { easing: "accelerate", ...options });
 }
 
-type IntersectionHandler = (el: Element) => void;
+type IntersectionHandler = (el: HTMLElement) => void;
 
 // v-intersection helpers
 function whenPastPercentage(
@@ -44,7 +44,7 @@ function whenPastPercentage(
 ) {
   return {
     handler: function (entry: IntersectionObserverEntry) {
-      entry.isIntersecting && intersectionHandler(entry.target);
+      entry.isIntersecting && intersectionHandler(entry.target as HTMLElement);
     },
     cfg: { threshold: percentage },
   };
