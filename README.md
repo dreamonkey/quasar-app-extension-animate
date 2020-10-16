@@ -1,6 +1,6 @@
 # Quasar animation system extension
 
-This app extension simplifies the use of animations activated when elements show up on the screen.
+This [App Extension(AE)](https://quasar.dev/app-extensions/introduction) simplifies the use of animations activated when elements show up on the screen.
 It's meant to work with [Intersection Directive](https://quasar.dev/vue-components/intersection#Introduction).
 
 All elements marked by a `[data-animate]` attribute will be hidden upon component mount and shown, with the animation you provide, once they come into view for a percentage you decide. You can also manage the animation delay, duration and easing via CSS classes or SCSS variables and functions.
@@ -13,9 +13,11 @@ Add the App Extension into your Quasar project
 quasar ext add @dreamonkey/animate
 ```
 
-Import the SCSS variables file at the end of your `src/css/quasar.variables.scss`
+This AE contains many variables and functions you can use to make your style definitions more readable and coherent.
+It provides the most used durations and commonly used easing functions so import it in the SCSS variables file:
 
 ```scss
+// src/css/quasar.variables.scss
 @import "~@dreamonkey/quasar-app-extension-animate/dist/animations";
 ```
 
@@ -25,7 +27,7 @@ If using Options or Class API, register the mixin on all components using this A
 import { AnimateMixin } from "@dreamonkey/quasar-app-extension-animate";
 
 export default {
-  // ...
+  name: "AboutAnimation",
   mixins: [AnimateMixin],
 };
 ```
@@ -37,7 +39,7 @@ import { useAnimate } from "@dreamonkey/quasar-app-extension-animate";
 import { defineComponent, ref, Ref } from "@vue/composition-api";
 
 export default defineComponent({
-  // ...
+  name: "AboutAnimation",
   setup() {
     const hostRef = ref() as Ref<HTMLElement>;
 
@@ -48,25 +50,26 @@ export default defineComponent({
 
 ## Uninstall
 
-Remove the App Entension from your Quasar project
+Remove the AE from your Quasar project;
 
 ```bash
 quasar ext remove @dreamonkey/animate
 ```
 
-Remove the SCSS variables file import from the end of your `src/css/quasar.variables.scss`
+Remove the SCSS variables file import from `src/css/quasar.variables.scss`;
 
-Remove all `AnimateMixin` and `useAnimate` references
+Remove all `AnimateMixin` and `useAnimate` references.
 
-## How It Works
+## How to use it
 
-Add `data-animate` attribute on every element you want to animate
+Define if you want to animate an element on your page or you want to make appear it with an animation.
+If the second apply a `data-animate` attribute on it.
 
 ```html
 <img data-animate class="my-dog" src="img/doggo.jpg" />
 ```
 
-The mixin/composable will set the opacity of all marked elements to zero during the component mount phase, making them invisible when not yet animated.
+The mixin/composable will set the opacity of all marked elements to zero during the component mount phase, making them invisible until they are triggered.
 
 Use the `v-intersection` directive and combine the functions provided by this AE to express the animation you want to obtain.
 As example, here's how you can animate an image with the following properties:
@@ -87,35 +90,38 @@ As example, here's how you can animate an image with the following properties:
 />
 ```
 
+## Concatenated animations
+
 You can manage multiple parallel, staggered or concatenated animations adding a bit of scripting.
-In this example a vertical separator is animated to grow in height while a title is animated in too, then all paragraphs of the content div are animated with a staggered fading in effect.
+In this example a vertical separator is animated to grow in height while a title is animated in too, **then** all paragraphs of the content div are animated with a staggered fading in effect.
 
 Our template will be:
 
 ```html
-<div
-  v-intersection.once="whenPastPercentage(0.1, animateSection)"
-  class="container"
->
-  <span class="separator" />
-  <div class="body">
-    <h5 data-animate class="title">
-      MY TITLE
-    </h5>
-    <div class="content">
-      <p data-animate>p1</p>
-      <p data-animate>p2</p>
-      <p data-animate>p3</p>
-      <p data-animate>p4</p>
-      <p data-animate>p5</p>
+<template>
+  <div
+    v-intersection.once="whenPastPercentage(0.1, animateSection)"
+    class="container"
+  >
+    <span class="separator" />
+    <div class="body">
+      <h5 data-animate class="title">MY TITLE</h5>
+      <div class="content">
+        <p data-animate>p1</p>
+        <p data-animate>p2</p>
+        <p data-animate>p3</p>
+        <p data-animate>p4</p>
+        <p data-animate>p5</p>
+      </div>
     </div>
   </div>
-</div>
+</template>
 ```
 
 ```scss
 .separator {
   border-left: solid 4px black;
+
   // separator animation is based on `scaleY` so we initially set it to 0
   transform: scaleY(0);
   transform-origin: top;
@@ -138,15 +144,15 @@ export default {
       const elements = el.querySelector(".content").children;
       let i = 0;
       this.animateIn("fadeInLeft", {
-        duration: `${INITIAL_ANIMATION_DURATION}ms`,
+        duration: `${TITLE_AND_SEPARATOR_ANIMATION_DURATION}ms`,
       })(title);
       this.animateIn("scale-normal", {
-        duration: `${INITIAL_ANIMATION_DURATION}ms`,
+        duration: `${TITLE_AND_SEPARATOR_ANIMATION_DURATION}ms`,
       })(separator);
       elements.forEach((element) => {
         this.animateIn("fadeInLeft", {
-          duration: `${ELEMENTS_ANIMATION_DURATION}ms`,
-          delay: DELAY_BEFORE_START + DELAY_BETWEEN_ELEMENTS_ANIMATION * i,
+          duration: `${PARAGRAPHS_ANIMATION_DURATION}ms`,
+          delay: DELAY_BEFORE_START + DELAY_BETWEEN_PARAGRAPHS_ANIMATION * i,
         })(element);
         i++;
       });
@@ -159,7 +165,7 @@ export default {
 
 ### `animate(animationClass, options)`
 
-Sets a timeout to create a delay if needed and adds the provided class, the 'animated' class needed to execute animations, and based on the options, an easing and a duration class. It also set the opacity to "" so the element become visible again once the animation starts.
+Automatically sets a timeout to create a delay if needed and adds the provided class, the (animated)[https://quasar.dev/options/animations#Usage] class(needed to execute animations), and based on the options, an easing and a duration class. It also set the opacity to "" so the element become visible again once the animation starts.
 
 Returns an `intersectionHandler` function usable with `whenPastXxx` helpers.
 
@@ -185,21 +191,23 @@ Same as `whenPast` but only accepts a numeric percentage.
 
 Same as `whenPast` but with pre-applied percentage.
 
-## Other Info
+## Common mistakes
 
-The SCSS file contains many variables and functions you can use to make your style definitions more readable and coherent, eg. most used durations, commonly used easing functions, etc.
-
-## Be careful
-
-This AE has already anticipated trigger the animations based on the percentage of an element in the viewport so be careful when:
+Animation are triggered using a percentage calculation and **NOT BASED ON HEIGHT** so:
 
 - On small screens
-  It might broke because elements wont resize correctly and part of them will always overflow breaking the mechanism.
+  It might break because elements won't resize correctly and part of them could overflow. Having a piece of it always out of the screen would break the percentage calculation.
 - On big elements
-  For the same concept if the element is to big and suppose that you want to trigger the animation `whenPastHalf` but it can't be contained in the viewport the animation could never be triggered.
-  (As the `whenPastHalf` refer to half of the percentage and NOT half of the height of the element)
+  For the same concept if the element is to big it could break the mechanism.
 - Margins/borders/and paddings
   Because they also are a part of the element and they influence the percentage.
+
+An example could be:
+
+> Assume that your screen in 900px high and you have a 1000px high with both the same width.
+> If you decide to animate the element with `whenPastEnd(...)` the element will never show up because it will never be shown on its completeness.
+
+In this case `end` won't represent the end of the element but when the element is all shown.
 
 ## Donate
 
