@@ -27,7 +27,7 @@ If using Options or Class API, register the mixin on all components using this A
 import { AnimateMixin } from "@dreamonkey/quasar-app-extension-animate";
 
 export default {
-  name: "AboutAnimation",
+  name: "AboutPage",
   mixins: [AnimateMixin],
 };
 ```
@@ -39,7 +39,7 @@ import { useAnimate } from "@dreamonkey/quasar-app-extension-animate";
 import { defineComponent, ref, Ref } from "@vue/composition-api";
 
 export default defineComponent({
-  name: "AboutAnimation",
+  name: "AboutPage",
   setup() {
     const hostRef = ref() as Ref<HTMLElement>;
 
@@ -50,26 +50,24 @@ export default defineComponent({
 
 ## Uninstall
 
-Remove the AE from your Quasar project;
+Remove the AE from your Quasar project:
 
 ```bash
 quasar ext remove @dreamonkey/animate
 ```
 
-Remove the SCSS variables file import from `src/css/quasar.variables.scss`;
+Remove the SCSS variables file import from `src/css/quasar.variables.scss`.
 
 Remove all `AnimateMixin` and `useAnimate` references.
 
 ## How to use it
 
-Define if you want to animate an element on your page or you want to make appear it with an animation.
-If the second apply a `data-animate` attribute on it.
+Add `data-animate` attribute on every element to which you want to attach an appear animation.
+The mixin/composable will set the opacity of all marked elements to zero during the component mount phase, making them invisible until they are triggered.
 
 ```html
 <img data-animate class="my-dog" src="img/doggo.jpg" />
 ```
-
-The mixin/composable will set the opacity of all marked elements to zero during the component mount phase, making them invisible until they are triggered.
 
 Use the `v-intersection` directive and combine the functions provided by this AE to express the animation you want to obtain.
 As example, here's how you can animate an image with the following properties:
@@ -121,11 +119,11 @@ Our template will be:
 ```scss
 .separator {
   border-left: solid 4px black;
-
   // separator animation is based on `scaleY` so we initially set it to 0
   transform: scaleY(0);
   transform-origin: top;
 }
+
 .scale-normal {
   transform: scale(1);
   transition-property: transform;
@@ -165,7 +163,7 @@ export default {
 
 ### `animate(animationClass, options)`
 
-Automatically sets a timeout to create a delay if needed and adds the provided class, the (animated)[https://quasar.dev/options/animations#Usage] class(needed to execute animations), and based on the options, an easing and a duration class. It also set the opacity to "" so the element become visible again once the animation starts.
+Automatically sets a timeout to create a delay if needed and adds the provided class, the [animated](https://quasar.dev/options/animations#Usage) class (needed to execute animations). Based on the options, it will also apply easing and duration classes. In case the element was hidden thanks to `data-animate` attribute, the opacity is reset to its original CSS value before the the animation starts.
 
 Returns an `intersectionHandler` function usable with `whenPastXxx` helpers.
 
@@ -193,21 +191,16 @@ Same as `whenPast` but with pre-applied percentage.
 
 ## Common mistakes
 
-Animation are triggered using a percentage calculation and **NOT BASED ON HEIGHT** so:
+Animation are triggered based on the percentage of the element which is contained in the screen, **NOT ON THE ELEMENT HEIGHT** :
 
-- On small screens
-  It might break because elements won't resize correctly and part of them could overflow. Having a piece of it always out of the screen would break the percentage calculation.
-- On big elements
-  For the same concept if the element is to big it could break the mechanism.
-- Margins/borders/and paddings
-  Because they also are a part of the element and they influence the percentage.
+- On small screens elements might not resize correctly and part of them could overflow. Having a piece of it always out of the screen would prevent the trigger to fire.
+- The same concept applies if the element is too big and overflows its container.
+- Borders and paddings are part of the element box model and could prevent the trigger to fire.
 
-An example could be:
+As example, consider a screen with height 900px containing an element with height of 1000px, both with the same width.
+If you want to animate the element with `whenPastEnd(...)` the element will never show up because the trigger condition cannot be met.
 
-> Assume that your screen in 900px high and you have a 1000px high with both the same width.
-> If you decide to animate the element with `whenPastEnd(...)` the element will never show up because it will never be shown on its completeness.
-
-In this case `end` won't represent the end of the element but when the element is all shown.
+In this context, the `End` part represent the moment where the element is fully contained into the view, not the end of the element height.
 
 ## Donate
 
