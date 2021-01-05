@@ -1,4 +1,2 @@
-import AnimateMixin from "./mixins/animate";
-import useAnimate from "./composables/animate";
-
-export { AnimateMixin, useAnimate };
+export { default as AnimateMixin } from "./mixins/animate";
+export { default as useAnimate } from "./composables/animate";
