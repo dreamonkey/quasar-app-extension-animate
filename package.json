@@ -1,6 +1,6 @@
 {
   "name": "@dreamonkey/quasar-app-extension-animate",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Extend Quasar animation system",
   "keywords": [
     "quasar",
