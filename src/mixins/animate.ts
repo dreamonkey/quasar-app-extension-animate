@@ -2,7 +2,7 @@ import {
   hideAnimatableElements,
   animationFns,
   insersectionFns,
-} from "../composables/animate";
+} from "../internals";
 
 export default {
   mounted(this: { $el: HTMLElement }) {
