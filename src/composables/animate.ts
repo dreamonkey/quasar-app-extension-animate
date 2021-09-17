@@ -1,4 +1,4 @@
-import { onMounted, Ref } from "@vue/composition-api";
+import { onMounted, Ref } from "vue";
 import {
   animationFns,
   hideAnimatableElements,
