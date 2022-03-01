@@ -1,8 +1,8 @@
 import {
-  hideAnimatableElements,
   animationFns,
+  hideAnimatableElements,
   insersectionFns,
-} from "../internals";
+} from '../internals';
 
 export default {
   mounted(this: { $el: HTMLElement }) {

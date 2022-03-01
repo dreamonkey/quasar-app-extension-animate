@@ -1,12 +1,20 @@
-import { onMounted, Ref } from "vue";
+import { onMounted, Ref } from 'vue';
 import {
   animationFns,
   hideAnimatableElements,
   insersectionFns,
-} from "../internals";
+} from '../internals';
 
-export function useAnimate(hostRef: Ref<HTMLElement>) {
-  onMounted(() => hideAnimatableElements(hostRef.value));
+export function useAnimate(componentRef: Ref<HTMLElement> | undefined) {
+  onMounted(() => {
+    if (componentRef !== undefined && componentRef.value !== undefined) {
+      hideAnimatableElements(componentRef.value);
+    } else {
+      console.warn(
+        'Element not passed to useAnimate, you can get some errors while managing callbacks behaviors'
+      );
+    }
+  });
 
   return {
     ...animationFns,

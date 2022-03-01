@@ -18,16 +18,16 @@ It provides the most used durations and commonly used easing functions so import
 
 ```scss
 // src/css/quasar.variables.scss
-@import "~@dreamonkey/quasar-app-extension-animate/dist/animations";
+@import '~@dreamonkey/quasar-app-extension-animate/dist/animations';
 ```
 
 If using Options or Class API, register the mixin on all components using this AE features
 
 ```ts
-import { AnimateMixin } from "@dreamonkey/quasar-app-extension-animate";
+import { AnimateMixin } from '@dreamonkey/quasar-app-extension-animate';
 
 export default {
-  name: "AboutPage",
+  name: 'AboutPage',
   mixins: [AnimateMixin],
 };
 ```
@@ -35,11 +35,11 @@ export default {
 If using Composition API, call the composable on all components using this AE features and provide it a ref to the component template root
 
 ```ts
-import { useAnimate } from "@dreamonkey/quasar-app-extension-animate";
-import { defineComponent, ref, Ref } from "@vue/composition-api";
+import { useAnimate } from '@dreamonkey/quasar-app-extension-animate';
+import { defineComponent, ref, Ref } from '@vue/composition-api';
 
 export default defineComponent({
-  name: "AboutPage",
+  name: 'AboutPage',
   setup() {
     const hostRef = ref() as Ref<HTMLElement>;
 
@@ -137,18 +137,18 @@ export default {
   // ...
   methods: {
     animateSection(el) {
-      const separator = el.querySelector(".separator");
-      const title = el.querySelector(".title");
-      const elements = el.querySelector(".content").children;
+      const separator = el.querySelector('.separator');
+      const title = el.querySelector('.title');
+      const elements = el.querySelector('.content').children;
       let i = 0;
-      this.animateIn("fadeInLeft", {
+      this.animateIn('fadeInLeft', {
         duration: `${TITLE_AND_SEPARATOR_ANIMATION_DURATION}ms`,
       })(title);
-      this.animateIn("scale-normal", {
+      this.animateIn('scale-normal', {
         duration: `${TITLE_AND_SEPARATOR_ANIMATION_DURATION}ms`,
       })(separator);
       elements.forEach((element) => {
-        this.animateIn("fadeInLeft", {
+        this.animateIn('fadeInLeft', {
           duration: `${PARAGRAPHS_ANIMATION_DURATION}ms`,
           delay: DELAY_BEFORE_START + DELAY_BETWEEN_PARAGRAPHS_ANIMATION * i,
         })(element);
@@ -191,7 +191,38 @@ Same as `whenPast` but with pre-applied percentage.
 
 ## Common mistakes
 
-Animation are triggered based on the percentage of the element which is contained in the screen, **NOT ON THE ELEMENT HEIGHT** :
+### SVG images doesn't works with directives
+
+Currently if you try to use this directive on svg tags you'll get an error like `ReferenceError: _directive_intersection is not defined`.
+Here is the [issue link](https://github.com/vuejs/core/issues/5289).
+
+A work around is wrapping the sv into a div and use this directive on that div:
+
+```html
+<div
+  v-intersection.once="
+    whenPastEnd(animateIn('fadeInDown', { duration: '800ms' }))
+  "
+  data-animate
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    version="1.1"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+  >
+    <path
+      d="M2,3H5.5L12,15L18.5,3H22L12,21L2,3M6.5,3H9.5L12,7.58L14.5,3H17.5L12,13.08L6.5,3Z"
+    />
+  </svg>
+</div>
+```
+
+Keep in mind that happens also on svg images inlined using modules like [svg-inline-loader](https://github.com/webpack-contrib/svg-inline-loader#svg-inline-loader-for-webpack).
+
+### Animation are triggered based on the percentage of the element which is contained in the screen, **NOT ON THE ELEMENT HEIGHT** :
 
 - On small screens elements might not resize correctly and part of them could overflow. Having a piece of it always out of the screen would prevent the trigger to fire.
 - The same concept applies if the element is too big and overflows its container.
