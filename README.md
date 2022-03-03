@@ -36,7 +36,7 @@ If using Composition API, call the composable in all components using this AE fe
 
 ```ts
 import { useAnimate } from "@dreamonkey/quasar-app-extension-animate";
-import { defineComponent, ref, Ref } from "@vue/composition-api";
+import { defineComponent } from "@vue/composition-api";
 
 export default defineComponent({
   name: "AboutPage",
