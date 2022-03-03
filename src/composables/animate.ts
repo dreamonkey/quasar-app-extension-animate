@@ -1,19 +1,17 @@
-import { onMounted, Ref } from 'vue';
+import { getCurrentInstance, onMounted } from "vue";
 import {
   animationFns,
+  getComponentRoot,
   hideAnimatableElements,
   insersectionFns,
-} from '../internals';
+} from "../internals";
 
-export function useAnimate(componentRef: Ref<HTMLElement> | undefined) {
+export function useAnimate() {
+  const vm = getCurrentInstance()?.proxy!;
+
   onMounted(() => {
-    if (componentRef !== undefined && componentRef.value !== undefined) {
-      hideAnimatableElements(componentRef.value);
-    } else {
-      console.warn(
-        'Element not passed to useAnimate, you can get some errors while managing callbacks behaviors'
-      );
-    }
+    const element = getComponentRoot(vm);
+    hideAnimatableElements(element);
   });
 
   return {

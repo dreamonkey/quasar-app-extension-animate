@@ -18,32 +18,32 @@ It provides the most used durations and commonly used easing functions so import
 
 ```scss
 // src/css/quasar.variables.scss
-@import '~@dreamonkey/quasar-app-extension-animate/dist/animations';
+@import "~@dreamonkey/quasar-app-extension-animate/dist/animations";
 ```
 
 If using Options or Class API, register the mixin on all components using this AE features
 
 ```ts
-import { AnimateMixin } from '@dreamonkey/quasar-app-extension-animate';
+import { AnimateMixin } from "@dreamonkey/quasar-app-extension-animate";
 
 export default {
-  name: 'AboutPage',
+  name: "AboutPage",
   mixins: [AnimateMixin],
 };
 ```
 
-If using Composition API, call the composable on all components using this AE features and provide it a ref to the component template root
+If using Composition API, call the composable in all components using this AE features (aka every component which contains at least a `data-animate` attribute)
 
 ```ts
-import { useAnimate } from '@dreamonkey/quasar-app-extension-animate';
-import { defineComponent, ref, Ref } from '@vue/composition-api';
+import { useAnimate } from "@dreamonkey/quasar-app-extension-animate";
+import { defineComponent, ref, Ref } from "@vue/composition-api";
 
 export default defineComponent({
-  name: 'AboutPage',
+  name: "AboutPage",
   setup() {
-    const hostRef = ref() as Ref<HTMLElement>;
+    const { whenPastEnd, animateIn } = useAnimate();
 
-    return { hostRef, ...useAnimate(hostRef) };
+    return { whenPastEnd, animateIn };
   },
 });
 ```
@@ -137,18 +137,18 @@ export default {
   // ...
   methods: {
     animateSection(el) {
-      const separator = el.querySelector('.separator');
-      const title = el.querySelector('.title');
-      const elements = el.querySelector('.content').children;
+      const separator = el.querySelector(".separator");
+      const title = el.querySelector(".title");
+      const elements = el.querySelector(".content").children;
       let i = 0;
-      this.animateIn('fadeInLeft', {
+      this.animateIn("fadeInLeft", {
         duration: `${TITLE_AND_SEPARATOR_ANIMATION_DURATION}ms`,
       })(title);
-      this.animateIn('scale-normal', {
+      this.animateIn("scale-normal", {
         duration: `${TITLE_AND_SEPARATOR_ANIMATION_DURATION}ms`,
       })(separator);
       elements.forEach((element) => {
-        this.animateIn('fadeInLeft', {
+        this.animateIn("fadeInLeft", {
           duration: `${PARAGRAPHS_ANIMATION_DURATION}ms`,
           delay: DELAY_BEFORE_START + DELAY_BETWEEN_PARAGRAPHS_ANIMATION * i,
         })(element);
@@ -196,7 +196,7 @@ Same as `whenPast` but with pre-applied percentage.
 Currently if you try to use this directive on svg tags you'll get an error like `ReferenceError: _directive_intersection is not defined`.
 Here is the [issue link](https://github.com/vuejs/core/issues/5289).
 
-A work around is wrapping the sv into a div and use this directive on that div:
+A work around is wrapping the svg into a div and apply this directive on it:
 
 ```html
 <div
@@ -220,7 +220,7 @@ A work around is wrapping the sv into a div and use this directive on that div:
 </div>
 ```
 
-Keep in mind that happens also on svg images inlined using modules like [svg-inline-loader](https://github.com/webpack-contrib/svg-inline-loader#svg-inline-loader-for-webpack).
+Notice that this is the case for svg inlined by third party tools too, eg. [svg-inline-loader](https://github.com/webpack-contrib/svg-inline-loader#svg-inline-loader-for-webpack).
 
 ### Animation are triggered based on the percentage of the element which is contained in the screen, **NOT ON THE ELEMENT HEIGHT** :
 

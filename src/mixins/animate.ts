@@ -1,12 +1,15 @@
+import { ComponentPublicInstance } from "vue";
 import {
   animationFns,
+  getComponentRoot,
   hideAnimatableElements,
   insersectionFns,
-} from '../internals';
+} from "../internals";
 
 export default {
-  mounted(this: { $el: HTMLElement }) {
-    hideAnimatableElements(this.$el);
+  mounted(this: ComponentPublicInstance) {
+    const element = getComponentRoot(this);
+    hideAnimatableElements(element);
   },
   methods: {
     ...animationFns,

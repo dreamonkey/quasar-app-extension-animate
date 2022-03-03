@@ -17,7 +17,7 @@
   "typings": "dist/types/exports.d.ts",
   "scripts": {
     "build": "rm -rf dist && tsc --declaration --declarationDir dist/types && copyfiles -f src/css/animations.scss dist",
-    "build:noNodes": "yarn install && yarn build && rm -rf node_modules",
+    "install-build-clean": "yarn install && yarn build && rm -rf node_modules",
     "test": "echo \"No test specified\" && exit 0",
     "deploy": "yarn build && yarn publish --tag latest"
   },
