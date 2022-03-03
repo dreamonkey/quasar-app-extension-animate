@@ -1,12 +1,16 @@
-import { onMounted, Ref } from "vue";
+import { getCurrentInstance, onMounted } from "vue";
 import {
   animationFns,
   hideAnimatableElements,
   insersectionFns,
 } from "../internals";
 
-export function useAnimate(hostRef: Ref<HTMLElement>) {
-  onMounted(() => hideAnimatableElements(hostRef.value));
+export function useAnimate() {
+  const vm = getCurrentInstance()?.proxy!;
+
+  onMounted(() => {
+    hideAnimatableElements(vm);
+  });
 
   return {
     ...animationFns,

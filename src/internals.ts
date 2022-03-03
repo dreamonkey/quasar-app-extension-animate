@@ -1,3 +1,6 @@
+import { ComponentPublicInstance } from "vue";
+import { ShapeFlags } from "@vue/shared";
+
 export interface AnimateOptions {
   delay?: number;
   easing?: string;
@@ -88,7 +91,15 @@ function whenPast(
   return whenPastPercentage(percentage, intersectionHandler);
 }
 
-export function hideAnimatableElements(element: HTMLElement) {
+// Taken from https://github.com/vuejs/test-utils/blob/1b35e75868025ab1925c15208c55580e52b27326/src/vueWrapper.ts#L67
+function getComponentRoot(vm: ComponentPublicInstance): HTMLElement {
+  // if the subtree is an array of children, we have multiple root nodes
+  const hasMultipleRoots = vm.$.subTree.shapeFlag === ShapeFlags.ARRAY_CHILDREN;
+  return hasMultipleRoots ? vm.$el : vm.$el.parentElement;
+}
+
+export function hideAnimatableElements(vm: ComponentPublicInstance) {
+  const element = getComponentRoot(vm);
   element.querySelectorAll<HTMLElement>("[data-animate]").forEach((el) => {
     el.style.opacity = "0";
   });

@@ -32,7 +32,7 @@ export default {
 };
 ```
 
-If using Composition API, call the composable on all components using this AE features and provide it a ref to the component template root
+If using Composition API, call the composable in all components using this AE features (aka every component which contains at least a `data-animate` attribute)
 
 ```ts
 import { useAnimate } from "@dreamonkey/quasar-app-extension-animate";
@@ -41,9 +41,9 @@ import { defineComponent, ref, Ref } from "@vue/composition-api";
 export default defineComponent({
   name: "AboutPage",
   setup() {
-    const hostRef = ref() as Ref<HTMLElement>;
+    const { whenPastEnd, animateIn } = useAnimate();
 
-    return { hostRef, ...useAnimate(hostRef) };
+    return { whenPastEnd, animateIn };
   },
 });
 ```
@@ -191,7 +191,38 @@ Same as `whenPast` but with pre-applied percentage.
 
 ## Common mistakes
 
-Animation are triggered based on the percentage of the element which is contained in the screen, **NOT ON THE ELEMENT HEIGHT** :
+### SVG images doesn't works with directives
+
+Currently if you try to use this directive on svg tags you'll get an error like `ReferenceError: _directive_intersection is not defined`.
+Here is the [issue link](https://github.com/vuejs/core/issues/5289).
+
+A work around is wrapping the svg into a div and apply this directive on it:
+
+```html
+<div
+  v-intersection.once="
+    whenPastEnd(animateIn('fadeInDown', { duration: '800ms' }))
+  "
+  data-animate
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    version="1.1"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+  >
+    <path
+      d="M2,3H5.5L12,15L18.5,3H22L12,21L2,3M6.5,3H9.5L12,7.58L14.5,3H17.5L12,13.08L6.5,3Z"
+    />
+  </svg>
+</div>
+```
+
+Notice that this is the case for svg inlined by third party tools too, eg. [svg-inline-loader](https://github.com/webpack-contrib/svg-inline-loader#svg-inline-loader-for-webpack).
+
+### Animation are triggered based on the percentage of the element which is contained in the screen, **NOT ON THE ELEMENT HEIGHT** :
 
 - On small screens elements might not resize correctly and part of them could overflow. Having a piece of it always out of the screen would prevent the trigger to fire.
 - The same concept applies if the element is too big and overflows its container.
