@@ -235,4 +235,4 @@ In this context, the `End` part represent the moment where the element is fully 
 
 ## Donate
 
-If you appreciate the work that went into this App Extension, please consider [donating to Quasar](https://donate.quasar.dev).
+If you appreciate the work that went into this App Extension, please consider [donating](https://github.com/sponsors/dreamonkey).
