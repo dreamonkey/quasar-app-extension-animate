@@ -101,7 +101,7 @@ export function whenPast(
 function getComponentRoot(vm: ComponentPublicInstance): HTMLElement {
   // if the subtree is an array of children, we have multiple root nodes
   const hasMultipleRoots = vm.$.subTree.shapeFlag === ShapeFlags.ARRAY_CHILDREN;
-  return hasMultipleRoots ? vm.$el : vm.$el.parentElement;
+  return hasMultipleRoots ? vm.$el.parentElement : vm.$el;
 }
 
 export function hideAnimatableElements(vm: ComponentPublicInstance) {
