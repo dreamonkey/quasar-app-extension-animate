@@ -10,7 +10,7 @@
   },
   "include": [
     "src/exports.ts",
-    "src/internals.ts",
+    "src/shared.ts",
     "src/composables/animate.ts",
     "src/mixins/animate.ts"
   ]

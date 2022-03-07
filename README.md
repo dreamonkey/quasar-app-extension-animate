@@ -24,24 +24,36 @@ It provides the most used durations and commonly used easing functions so import
 If using Options or Class API, register the mixin on all components using this AE features
 
 ```ts
-import { AnimateMixin } from "@dreamonkey/quasar-app-extension-animate";
+import {
+  AnimateMixin,
+  animateIn,
+  whenPastEnd,
+} from "@dreamonkey/quasar-app-extension-animate";
 
 export default {
   name: "AboutPage",
   mixins: [AnimateMixin],
+  methods: {
+    animateIn,
+    whenPastEnd,
+  },
 };
 ```
 
 If using Composition API, call the composable in all components using this AE features (aka every component which contains at least a `data-animate` attribute)
 
 ```ts
-import { useAnimate } from "@dreamonkey/quasar-app-extension-animate";
+import {
+  useAnimate,
+  animateIn,
+  whenPastEnd,
+} from "@dreamonkey/quasar-app-extension-animate";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "AboutPage",
   setup() {
-    const { whenPastEnd, animateIn } = useAnimate();
+    useAnimate();
 
     return { whenPastEnd, animateIn };
   },
@@ -80,8 +92,8 @@ As example, here's how you can animate an image with the following properties:
 ```html
 <img
   v-intersection.once="
-        whenPastEnd(animateIn('fadeInDown', { duration: '800ms' }))
-    "
+    whenPastEnd(animateIn('fadeInDown', { duration: '800ms' }))
+  "
   data-animate
   class="my-dog"
   src="img/doggo.jpg"
@@ -133,6 +145,8 @@ Our template will be:
 Define the method which starts the animations on the component
 
 ```js
+import { animateIn } from "@dreamonkey/quasar-app-extension-animate";
+
 export default {
   // ...
   methods: {
@@ -141,14 +155,14 @@ export default {
       const title = el.querySelector(".title");
       const elements = el.querySelector(".content").children;
       let i = 0;
-      this.animateIn("fadeInLeft", {
+      animateIn("fadeInLeft", {
         duration: `${TITLE_AND_SEPARATOR_ANIMATION_DURATION}ms`,
       })(title);
-      this.animateIn("scale-normal", {
+      animateIn("scale-normal", {
         duration: `${TITLE_AND_SEPARATOR_ANIMATION_DURATION}ms`,
       })(separator);
       elements.forEach((element) => {
-        this.animateIn("fadeInLeft", {
+        animateIn("fadeInLeft", {
           duration: `${PARAGRAPHS_ANIMATION_DURATION}ms`,
           delay: DELAY_BEFORE_START + DELAY_BETWEEN_PARAGRAPHS_ANIMATION * i,
         })(element);

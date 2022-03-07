@@ -1,9 +1,5 @@
 import { getCurrentInstance, onMounted } from "vue";
-import {
-  animationFns,
-  hideAnimatableElements,
-  insersectionFns,
-} from "../internals";
+import { hideAnimatableElements } from "../shared";
 
 export function useAnimate() {
   const vm = getCurrentInstance()?.proxy!;
@@ -11,11 +7,6 @@ export function useAnimate() {
   onMounted(() => {
     hideAnimatableElements(vm);
   });
-
-  return {
-    ...animationFns,
-    ...insersectionFns,
-  };
 }
 
 export default useAnimate;
