@@ -19,7 +19,7 @@ Utility classes are automatically registered by the AE, but you need to import t
 
 ```scss
 // src/css/quasar.variables.scss
-@import "~@dreamonkey/quasar-app-extension-animate/dist/animations-helpers";
+@import "~@dreamonkey/quasar-app-extension-animate/dist/animations";
 ```
 
 If using Options or Class API, register the mixin on all components using this AE features
