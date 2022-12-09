@@ -1,4 +1,4 @@
-@import "animations-helpers.scss";
+@import "animations.scss";
 
 @each $duration-name, $duration-value in $duration {
   //We must increase the specificity otherwise the properties would be overwritten by ".animated" class
