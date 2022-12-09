@@ -9,7 +9,7 @@
 module.exports = function (api) {
   api.extendQuasarConf((conf) => {
     conf.css.push(
-      "~@dreamonkey/quasar-app-extension-animate/src/css/animations.scss"
+      "~@dreamonkey/quasar-app-extension-animate/src/css/animations-utilities.scss"
     );
     conf.build.transpileDependencies.push(
       /@dreamonkey[\\/]quasar-app-extension-animate/

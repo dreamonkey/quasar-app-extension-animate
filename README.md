@@ -13,12 +13,13 @@ Add the App Extension into your Quasar project
 quasar ext add @dreamonkey/animate
 ```
 
-This AE contains many variables and functions you can use to make your style definitions more readable and coherent.
-It provides the most used durations and commonly used easing functions so import it in the SCSS variables file:
+This AE contains many variables, functions and utility classes you can use to make your style definitions more readable and coherent.
+It provides the most used durations and commonly used easing functions.
+Utility classes are automatically registered by the AE, but you need to import the variables and functions in your Quasar SCSS variables file to make them available in the style tag of all your components:
 
 ```scss
 // src/css/quasar.variables.scss
-@import "~@dreamonkey/quasar-app-extension-animate/dist/animations";
+@import "~@dreamonkey/quasar-app-extension-animate/dist/animations-helpers";
 ```
 
 If using Options or Class API, register the mixin on all components using this AE features

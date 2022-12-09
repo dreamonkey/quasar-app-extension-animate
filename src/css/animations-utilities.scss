@@ -1,0 +1,22 @@
+@import "animations-helpers.scss";
+
+@each $duration-name, $duration-value in $duration {
+  //We must increase the specificity otherwise the properties would be overwritten by ".animated" class
+  .duration-#{$duration-name}.duration-#{$duration-name} {
+    animation-duration: $duration-value;
+    // The next line is set to allow the management of transition durations
+    // This could cause bugs and in case will be removed, WATCH OUT
+    transition-duration: $duration-value;
+  }
+}
+
+@each $easing-name, $easing-value in $easing {
+  .easing-#{$easing-name} {
+    animation-timing-function: $easing-value;
+  }
+}
+
+.animated {
+  @extend .easing-standard;
+  @extend .duration-shape-change;
+}

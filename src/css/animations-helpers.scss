@@ -25,16 +25,6 @@ $duration: (
   @return null;
 }
 
-@each $duration-name, $duration-value in $duration {
-  //We must increase the specificity otherwise the properties would be overwritten by ".animated" class
-  .duration-#{$duration-name}.duration-#{$duration-name} {
-    animation-duration: $duration-value;
-    // The next line is set to allow the management of transition durations
-    // This could cause bugs and in case will be removed, WATCH OUT
-    transition-duration: $duration-value;
-  }
-}
-
 // Reference for cubic-bezier equivalent to standard easing keywords: https://css-tricks.com/ease-out-in-ease-in-out/
 // Reference for material easings: https://material.io/design/motion/speed.html#easing
 
@@ -52,15 +42,4 @@ $easing: (
   @error "Cannot find '#{$easing}' option into $easing list.";
 
   @return null;
-}
-
-@each $easing-name, $easing-value in $easing {
-  .easing-#{$easing-name} {
-    animation-timing-function: $easing-value;
-  }
-}
-
-.animated {
-  @extend .easing-standard;
-  @extend .duration-shape-change;
 }
